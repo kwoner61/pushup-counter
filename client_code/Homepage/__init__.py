@@ -12,8 +12,9 @@ from datetime import date
 class Homepage(HomepageTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
-    self.item['date'] = date.today().isoformat()
-    r = app_tables.pushups.get(date=date.today().isoformat())
+    d = date.today().isoformat()
+    self.item['date'] = d
+    r = app_tables.pushups.get(date=d)
     self.item['today_count'] = r['count'] if r else 0
     self.init_components(**properties)
     # Any code you write here will run when the form opens.
@@ -23,8 +24,9 @@ class Homepage(HomepageTemplate):
 
   def form_refreshing_data_bindings(self, **event_args):
     """This method is called when refreshing_data_bindings is called"""
-    self.item['date'] = date.today().isoformat()
-    r = app_tables.pushups.get(date=date.today().isoformat())
+    d = date.today().isoformat()
+    self.item['date'] = d
+    r = app_tables.pushups.get(date=d)
     self.item['today_count'] = r['count'] if r else 0
     entries = anvil.server.call('get_entries')
     self.bar_chart.data = go.Bar(x=entries['dates'], y=entries['counts'])
