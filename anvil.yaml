@@ -48,4 +48,5 @@ db_schema:
       admin_ui: {width: 200}
       type: link_single
       target: categories
+uplink_visible: true
 renamed: true
