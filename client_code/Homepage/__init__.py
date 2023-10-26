@@ -18,7 +18,7 @@ class Homepage(HomepageTemplate):
     self.item['today_count'] = r['count'] if r else 0
     self.init_components(**properties)
     # Any code you write here will run when the form opens.
-    entries = anvil.server.call('get_entries')
+    entries = anvil.server.call_s('get_entries')
     self.bar_chart.data = go.Bar(x=entries['dates'], y=entries['counts'])
 
 
@@ -28,7 +28,7 @@ class Homepage(HomepageTemplate):
     self.item['date'] = d
     r = app_tables.pushups.get(date=d)
     self.item['today_count'] = r['count'] if r else 0
-    entries = anvil.server.call('get_entries')
+    entries = anvil.server.call_s('get_entries')
     self.bar_chart.data = go.Bar(x=entries['dates'], y=entries['counts'])
     self.refresh_data_bindings()
 
