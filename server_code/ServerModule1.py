@@ -3,8 +3,8 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime, date
-import pandas as pd
-import numpy as np
+# import pandas as pd
+# import numpy as np
 import plotly.graph_objects as go
 
 
@@ -21,27 +21,24 @@ def add_entry():
   else:
     app_tables.pushups.add_row(count=1, date=d, created=datetime.now())
 
-
+@anvil.server.callable
 def get_entries():
-  df_dict = {
-    'Date': [],
-    'Count': []
+  # df_dict = {
+  #   'Date': [],
+  #   'Count': []
+  # }
+  entries = {
+    'counts': [],
+    'dates': []
   }
   data = app_tables.pushups.search()
   for entry in data:
-    df_dict['Date'].append(entry['date'])
-    df_dict['Count'].append(entry['count'])
+    entries['dates'].append(entry['date'])
+    entries['counts'].append(entry['count'])
 
   # Convert dictionary to DataFrame
-  df = pd.DataFrame(df_dict)
-  df['Date'] = pd.to_datetime(df['Date'])
+  # df = pd.DataFrame(df_dict)
+  # df['Date'] = pd.to_datetime(df['Date'])
   # print(df.head())
-  return df
+  return entries
 
-@anvil.server.callable
-def create_histogram():
-  DATA = get_entries()
-  # histogram = np.histogram(DATA['Date'].dt.hour, bins=24)[0]
-  print(DATA['Date'].dt.date)
-  histogram = np.histogram(DATA['Date'].dt.date, bins=7)[0]
-  return histogram

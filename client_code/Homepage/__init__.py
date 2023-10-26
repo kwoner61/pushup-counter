@@ -17,7 +17,8 @@ class Homepage(HomepageTemplate):
     self.item['today_count'] = r['count'] if r else 0
     self.init_components(**properties)
     # Any code you write here will run when the form opens.
-    self.bar_chart.data = go.Bar(y=anvil.server.call('create_histogram'))
+    entries = anvil.server.call('get_entries')
+    self.bar_chart.data = go.Bar(x=entries['dates'], y=entries['counts'])
     # threading.Timer(2, form_refreshing_data_bindings).start()
 
   def form_refreshing_data_bindings(self, **event_args):
@@ -26,5 +27,7 @@ class Homepage(HomepageTemplate):
     self.item['date'] = date.today().isoformat()
     r = app_tables.pushups.get(date=date.today().isoformat())
     self.item['today_count'] = r['count'] if r else 0
+    entries = anvil.server.call('get_entries')
+    self.bar_chart.data = go.Bar(x=entries['dates'], y=entries['counts'])
     self.refresh_data_bindings()
 

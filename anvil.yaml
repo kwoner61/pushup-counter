@@ -12,7 +12,7 @@ runtime_options:
   version: 2
   client_version: '3'
   server_version: python3-sandbox
-  server_spec: {base: python310-minimal}
+  server_spec: null
   server_spec_disabled: {requirements: '', base: python310-minimal}
 metadata: {title: Pushups, description: Count the number of pushups performed}
 startup_form: null
