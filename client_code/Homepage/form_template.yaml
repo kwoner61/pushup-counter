@@ -29,10 +29,14 @@ components:
   name: column_panel_1
   layout_properties: {slot: default}
   components:
+  - type: Spacer
+    properties: {height: 52}
+    name: spacer_2
+    layout_properties: {grid_position: 'CKPBXB,TEOLDP ZBTZKW,OFLWKZ'}
   - type: Plot
     properties: {}
-    name: plot_1
-    layout_properties: {grid_position: 'CKPBXB,TEOLDP'}
+    name: bar_chart
+    layout_properties: {grid_position: 'CKPBXB,TEOLDP OQSLFU,YCPSSM'}
   - type: ColumnPanel
     properties: {role: null, tooltip: '', border: '', foreground: '', visible: true,
       wrap_on: mobile, col_spacing: medium, spacing_above: small, col_widths: '{}',

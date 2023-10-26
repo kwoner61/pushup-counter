@@ -12,46 +12,19 @@ from datetime import date
 class Homepage(HomepageTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
-    self.init_components(**properties)
-    # Any code you write here will run when the form opens.
     self.item['date'] = date.today().isoformat()
     r = app_tables.pushups.get(date=date.today().isoformat())
     self.item['today_count'] = r['count'] if r else 0
-    print("init")
+    self.init_components(**properties)
+    # Any code you write here will run when the form opens.
+    self.bar_chart.data = go.Bar(y=anvil.server.call('create_histogram'))
     # threading.Timer(2, form_refreshing_data_bindings).start()
-      # Set an event handler on the RepeatingPanel (our 'entries_panel')
-    # self.entries_panel.set_event_handler('x-delete-entry', self.delete_entry)
-
-  def add_entry_button_click(self, **event_args):
-    """This method is called when the button is clicked"""
-    # Initialise an empty dictionary to store the user inputs
-    new_entry = {}
-    # Open an alert displaying the 'EntryEdit' Form
-    save_clicked = alert(
-      content=EntryEdit(item=new_entry),
-      title="Add Entry",
-      large=True,
-      buttons=[("Save", True), ("Cancel", False)]
-    )
-    # If the alert returned 'True', the save button was clicked.
-    if save_clicked:
-      anvil.server.call('add_entry', new_entry)
-      self.refresh_entries()
-    
-  def refresh_entries(self):
-     # Load existing entries from the Data Table, 
-     # and display them in the RepeatingPanel
-     # self.entries_panel.items = anvil.server.call('get_entries')
-    print("refresh")
-
-  # def delete_entry(self, entry, **event_args):
-  #   # Delete the entry
-  #   anvil.server.call('delete_entry', entry)
-  #   # Refresh entry to remove the deleted entry from the Homepage
-  #   self.refresh_entries()
 
   def form_refreshing_data_bindings(self, **event_args):
     """This method is called when refreshing_data_bindings is called"""
     print("Refresh data binding")
-
+    self.item['date'] = date.today().isoformat()
+    r = app_tables.pushups.get(date=date.today().isoformat())
+    self.item['today_count'] = r['count'] if r else 0
+    self.refresh_data_bindings()
 

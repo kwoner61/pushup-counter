@@ -3,6 +3,9 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime, date
+import pandas as pd
+import numpy as np
+import plotly.graph_objects as go
 
 
 @anvil.server.callable
@@ -18,26 +21,27 @@ def add_entry():
   else:
     app_tables.pushups.add_row(count=1, date=d, created=datetime.now())
 
-@anvil.server.callable
+
 def get_entries():
-  # Get a list of entries from the Data Table, sorted by 'created' column, in descending order
-  return app_tables.entries.search(
-    tables.order_by("created", ascending=False)
-  )
+  df_dict = {
+    'Date': [],
+    'Count': []
+  }
+  data = app_tables.pushups.search()
+  for entry in data:
+    df_dict['Date'].append(entry['date'])
+    df_dict['Count'].append(entry['count'])
+
+  # Convert dictionary to DataFrame
+  df = pd.DataFrame(df_dict)
+  df['Date'] = pd.to_datetime(df['Date'])
+  # print(df.head())
+  return df
 
 @anvil.server.callable
-def update_entry(entry, entry_dict):
-  # check that the entry given is really a row in the ‘entries’ table
-  if app_tables.entries.has_row(entry):
-    entry_dict['updated'] = datetime.now()
-    entry.update(**entry_dict)
-  else:
-    raise Exception("Entry does not exist")
-
-@anvil.server.callable
-def delete_entry(entry):
-  # check that the entry being deleted exists in the Data Table
-  if app_tables.entries.has_row(entry):
-    entry.delete()
-  else:
-    raise Exception("Entry does not exist")
+def create_histogram():
+  DATA = get_entries()
+  # histogram = np.histogram(DATA['Date'].dt.hour, bins=24)[0]
+  print(DATA['Date'].dt.date)
+  histogram = np.histogram(DATA['Date'].dt.date, bins=7)[0]
+  return histogram
