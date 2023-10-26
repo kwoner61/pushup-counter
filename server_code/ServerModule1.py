@@ -3,8 +3,6 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime, date
-# import pandas as pd
-# import numpy as np
 import plotly.graph_objects as go
 
 
@@ -12,7 +10,6 @@ import plotly.graph_objects as go
 def add_entry():
   d = date.today().isoformat()
   r = app_tables.pushups.get(date=d)
-  
   if r:
     entry_dict = {}
     entry_dict['count'] = r['count'] + 1
@@ -21,12 +18,9 @@ def add_entry():
   else:
     app_tables.pushups.add_row(count=1, date=d, created=datetime.now())
 
+
 @anvil.server.callable
 def get_entries():
-  # df_dict = {
-  #   'Date': [],
-  #   'Count': []
-  # }
   entries = {
     'counts': [],
     'dates': []
@@ -35,10 +29,4 @@ def get_entries():
   for entry in data:
     entries['dates'].append(entry['date'])
     entries['counts'].append(entry['count'])
-
-  # Convert dictionary to DataFrame
-  # df = pd.DataFrame(df_dict)
-  # df['Date'] = pd.to_datetime(df['Date'])
-  # print(df.head())
   return entries
-

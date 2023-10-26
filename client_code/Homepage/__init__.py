@@ -31,3 +31,7 @@ class Homepage(HomepageTemplate):
     self.bar_chart.data = go.Bar(x=entries['dates'], y=entries['counts'])
     self.refresh_data_bindings()
 
+  def timer_1_tick(self, **event_args):
+    """This method is called Every [interval] seconds. Does not trigger if [interval] is 0."""
+    print("tick")
+    self.form_refreshing_data_bindings()

@@ -68,3 +68,7 @@ components:
     layout_properties: {grid_position: 'CKPBXB,QZUZZL BDPGIE,OJNTXZ'}
     data_bindings:
     - {property: text, code: 'self.item[''today_count'']'}
+- type: Timer
+  properties: {interval: 2}
+  name: timer_1
+  event_bindings: {tick: timer_1_tick}
