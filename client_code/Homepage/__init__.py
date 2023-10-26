@@ -1,19 +1,26 @@
 from ._anvil_designer import HomepageTemplate
 from anvil import *
+import plotly.graph_objects as go
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from ..EntryEdit import EntryEdit
+from datetime import date
+# import threading
 
 class Homepage(HomepageTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     # Any code you write here will run when the form opens.
-    self.refresh_entries()
+    self.item['date'] = date.today().isoformat()
+    r = app_tables.pushups.get(date=date.today().isoformat())
+    self.item['today_count'] = r['count'] if r else 0
+    print("init")
+    # threading.Timer(2, form_refreshing_data_bindings).start()
       # Set an event handler on the RepeatingPanel (our 'entries_panel')
-    self.entries_panel.set_event_handler('x-delete-entry', self.delete_entry)
+    # self.entries_panel.set_event_handler('x-delete-entry', self.delete_entry)
 
   def add_entry_button_click(self, **event_args):
     """This method is called when the button is clicked"""
@@ -34,11 +41,17 @@ class Homepage(HomepageTemplate):
   def refresh_entries(self):
      # Load existing entries from the Data Table, 
      # and display them in the RepeatingPanel
-     self.entries_panel.items = anvil.server.call('get_entries')
+     # self.entries_panel.items = anvil.server.call('get_entries')
+    print("refresh")
 
-  def delete_entry(self, entry, **event_args):
-    # Delete the entry
-    anvil.server.call('delete_entry', entry)
-    # Refresh entry to remove the deleted entry from the Homepage
-    self.refresh_entries()
+  # def delete_entry(self, entry, **event_args):
+  #   # Delete the entry
+  #   anvil.server.call('delete_entry', entry)
+  #   # Refresh entry to remove the deleted entry from the Homepage
+  #   self.refresh_entries()
+
+  def form_refreshing_data_bindings(self, **event_args):
+    """This method is called when refreshing_data_bindings is called"""
+    print("Refresh data binding")
+
 
