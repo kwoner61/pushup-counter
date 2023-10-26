@@ -48,5 +48,22 @@ db_schema:
       admin_ui: {width: 200}
       type: link_single
       target: categories
+  pushups:
+    client: none
+    server: full
+    columns:
+    - name: created
+      admin_ui: {width: 200, order: 0}
+      type: datetime
+    - name: updated
+      admin_ui: {width: 200, order: 1}
+      type: datetime
+    - name: count
+      admin_ui: {order: -0.5, width: 200}
+      type: number
+    - name: date
+      admin_ui: {order: -1.5, width: 200}
+      type: string
+    title: Pushups
 uplink_visible: true
 renamed: true
